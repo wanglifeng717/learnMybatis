@@ -7,7 +7,7 @@
 * @date 2017年12月24日
 * @version 1.0
 */
-package com.tongji.helloworld;
+package com.tongji.bean;
 
 import java.sql.Date;
 

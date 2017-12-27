@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tongji.helloworld.EmployeeMapper">
+<!-- 
+namespace:名称空间;指定为接口的全类名
+id：唯一标识
+resultType：返回值类型
+#{id}：从传递过来的参数中取出id值
+
+public Employee getEmpById(Integer id);
+ -->
+	<select id="getEmpById" resultType="com.tongji.helloworld.Employee">
+	<!-- 需要注意的是，如果你javabean属性名和字段名是不一样的，这里取别名才能赋值成功 -->
+		select employee_id id,last_name ,hire_date from employees where employee_id = #{id}
+	</select>
+</mapper>

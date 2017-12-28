@@ -3,14 +3,21 @@
  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <!-- 
+        1.mybatis 可以使用properties来引入外部的properties配置文件的内容：
+        resource:引入类路径下的资源,如果在类路径下面就直接写文件名，要是还在包里面
+        url:引入网络路径路径或者磁盘路径下的资源
+     -->
+     <properties resource="dbconf/dbconf.properties"></properties>
+
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC" />
 			<dataSource type="POOLED">
-				<property name="driver" value="oracle.jdbc.driver.OracleDriver" />
-				<property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl" />
-				<property name="username" value="scott" />
-				<property name="password" value="tiger" />
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value= "${jdbc.username}"/>
+				<property name="password" value="${jdbc.password}" />
 			</dataSource>
 		</environment>
 	</environments>
@@ -18,4 +25,5 @@
 	<mappers>
 		<mapper resource="EmployeeMapper.xml" />
 	</mappers>
+	
 </configuration>

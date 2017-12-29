@@ -19,6 +19,7 @@ import org.junit.Test;
 
 import com.tongji.bean.Employee;
 import com.tongji.dao.EmployeeMapper;
+import com.tongji.dao.EmployeeMapperAnnotation;
 
 /**  
 * Title: MybatisTest 
@@ -73,7 +74,7 @@ public class GetDataById {
 		SqlSession openSession=sessionFactory.openSession();
 		try {
 			//select的唯一ID推荐使用namespace+id的全名防止重复
-			Employee employee=openSession.selectOne("com.tongji.helloworld.EmployeeMapper.getEmpById", 178);
+			Employee employee=openSession.selectOne("com.tongji.dao.EmployeeMapper.getEmpById", 178);
 			System.out.println(employee);
 		}finally {
 			openSession.close();
@@ -100,5 +101,22 @@ public class GetDataById {
 				} finally {
 					openSession.close();
 				}
+	}
+	/**
+	 * 功能：基于注解的方式。我们定义一个接口，然后在接口的方法上写注解，然后把这个接口注册到全局的配置文件中
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void selectByAnnotation() throws IOException {
+		SqlSessionFactory sessionFactory = getSqlSessionFactory();
+		SqlSession session= sessionFactory.openSession();
+		try {
+			EmployeeMapperAnnotation  mapperAnnotation = session.getMapper(EmployeeMapperAnnotation.class);
+			Employee employee = mapperAnnotation.getEmpById(178);
+			System.out.println(employee);
+		} finally {
+			session.close();
+		}
 	}
 }

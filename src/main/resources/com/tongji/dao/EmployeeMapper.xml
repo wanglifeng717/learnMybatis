@@ -11,8 +11,14 @@ resultType：返回值类型
 
 public Employee getEmpById(Integer id);把这个接口的方法和这个id绑定
  -->
-	<select id="getEmpById" resultType="com.tongji.bean.Employee">
+	<select id="getEmpById" resultType="com.tongji.bean.Employee"
+	databaseId="oracle">
 	<!-- 需要注意的是，如果你javabean属性名和字段名是不一样的，这里取别名才能赋值成功 -->
-		select employee_id id,last_name ,hire_date from employees where employee_id = #{id}
+		select * from employees where employee_id = #{id}
 	</select>
+	<select id="getEmpById" resultType="com.tongji.bean.Employee"
+        databaseId="mysql">
+        select id,name lastname,birth hiredate from customer where id=#{id}
+    </select>
+	
 </mapper>

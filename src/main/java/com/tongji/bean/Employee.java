@@ -20,30 +20,44 @@ import java.sql.Date;
 public class Employee {
 
 	int id;          //这个属性和数据库的字段如果不同，查询的时候必须用别名
-	String LastName;
+	String lastName;
 	Date hireDate;
+	public Employee() {
+		super();
+		// TODO 自动生成的构造函数存根
+	}
+	public Employee(int id, String lastName, Date hireDate) {
+		super();
+		this.id = id;
+		this.lastName = lastName;
+		this.hireDate = hireDate;
+	}
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getLast_name() {
-		return LastName;
+	public String getLastName() {
+		return lastName;
 	}
-	public void setLast_name(String last_name) {
-		this.LastName = last_name;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
-	public Date getHire_date() {
+	public Date getHireDate() {
 		return hireDate;
 	}
-	public void setHire_date(Date hire_date) {
-		this.hireDate = hire_date;
+	public void setHireDate(Date hireDate) {
+		this.hireDate = hireDate;
 	}
 	@Override
 	public String toString() {
-		return "employee [id=" + id + ", lastName=" + LastName + ", hireDate=" + hireDate + "]";
+		return "Employee [id=" + id + ", lastName=" + lastName + ", hireDate=" + hireDate + "]";
 	}
+	
+	
+
+	
 	
 	
 }

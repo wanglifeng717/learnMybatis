@@ -16,7 +16,7 @@ public Employee getEmpById(Integer id);把这个接口的方法和这个id绑定
 	<!-- 需要注意的是，如果你javabean属性名和字段名是不一样的，这里取别名才能赋值成功 但是配置文件里面已经配置了驼峰转换就没关系。-->
 		select * from employees where employee_id = #{id}
 	</select>
-	<!--为了兼容不同的数据库，不同的数据库不同的SQL  -->
+	<!--为了兼容不同的数据库，不同的数据库不同的SQL -->
 	<select id="getEmpById" resultType="com.tongji.bean.Employee"
         databaseId="mysql">
         select id,name lastname,birth hiredate from customer where id=#{id}
@@ -24,12 +24,20 @@ public Employee getEmpById(Integer id);把这个接口的方法和这个id绑定
 	
 	
     <!-- public void addEmp(Employee employee); -->
-     <!-- 这个parameterType是可以省略不写的， -->
+     <!-- 这个parameterType是可以省略不写的-->
     <insert id="addEmp" parameterType="com.tongji.bean.Employee">
         insert into employees(employee_id,last_name,hire_date)
         values(#{id},#{lastName},#{hireDate})
     </insert>
-    
+    <!-- mysql是支持自增的主键的，自增主键的获取利用statement.getGenreatedKeys（）； 
+    useGeneratedKeys="true";使用自增获取主键的策略
+    keyProperty指定对应的主键属性，把值封装给javaBean的哪个属性。
+    -->
+    <insert id="addEmp" databaseId="mysql" useGeneratedKeys="true"
+    keyProperty="id">
+        insert into customer(name,birth)
+        values(#{lastName},#{hireDate})
+    </insert>
     <!--  public void updateEmp(Employee employee); -->
     <update id="updateEmp">
         update employees 

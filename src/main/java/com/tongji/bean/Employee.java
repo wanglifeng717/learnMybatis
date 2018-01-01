@@ -19,14 +19,14 @@ import java.sql.Date;
 */
 public class Employee {
 
-	int id;          //这个属性和数据库的字段如果不同，查询的时候必须用别名
+	Integer id;          //这个属性和数据库的字段如果不同，查询的时候必须用别名
 	String lastName;
 	Date hireDate;
 	public Employee() {
 		super();
 		// TODO 自动生成的构造函数存根
 	}
-	public Employee(int id, String lastName, Date hireDate) {
+	public Employee(Integer id, String lastName, Date hireDate) {
 		super();
 		this.id = id;
 		this.lastName = lastName;
@@ -35,7 +35,7 @@ public class Employee {
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getLastName() {

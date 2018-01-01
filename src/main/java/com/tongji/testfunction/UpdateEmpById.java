@@ -37,6 +37,12 @@ public class UpdateEmpById {
 		InputStream inputStream=Resources.getResourceAsStream(resource);
 		return new SqlSessionFactoryBuilder().build(inputStream);
 	}
+	/**
+	 * 功能：根据ID值更新一条记录。
+	 * SqlSessionFactory.openSession();手动提交
+	 * SqlSessionFactory.openSession(true);自动提交
+	 * @throws IOException
+	 */
 	@Test
 	public void testUpdateEmpById() throws IOException {
 		SqlSessionFactory sessionFactory=getSqlSessionFactory();

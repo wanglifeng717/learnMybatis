@@ -22,13 +22,55 @@ public Employee getEmpById(Integer id);把这个接口的方法和这个id绑定
         select id,name lastname,birth hiredate from customer where id=#{id}
     </select>
 	
+
 	
-    <!-- public void addEmp(Employee employee); -->
-     <!-- 这个parameterType是可以省略不写的-->
-    <insert id="addEmp" parameterType="com.tongji.bean.Employee">
+	   
+	<!-- public void addEmp(Employee employee); -->
+    <!-- SQL语句不能有分号 -->
+    <!-- oracle默认的插入一条数据 -->
+    <!-- <insert id="addEmp">
+         insert into employees(employee_id,last_name,hire_date)
+         values(#{id},#{lastName},#{hireDate})
+    </insert> -->
+    
+     <!-- 这个parameterType是可以省略不写的
+     oracle是通过序列和触发器来获得自增的主键的。这种方式是可以不用触发器，就可以自增的插入
+                 自增列的数据。
+     -->
+    <insert id="addEmp" parameterType="com.tongji.bean.Employee"
+    databaseId="oracle">
+    <!-- keyproperty吧查出的主键值给javabean的哪个属性 
+         order="BEFORE"当前的sql在插入sql之前运行
+         resultType:查出的数据的返回值类型
+    -->
+        <selectKey keyProperty="id" order="BEFORE" resultType="Integer">
+            <!-- 编写查询主键序列的SQL语句 -->
+            select test_seq.nextval from dual
+        </selectKey>
+            <!-- 插入时的主键从序列中拿到 -->
         insert into employees(employee_id,last_name,hire_date)
         values(#{id},#{lastName},#{hireDate})
     </insert>
+	
+	<!-- 不推荐：用after来获取我们自增的主键(插入一条数据，插入多条，只返回的最后一条的主键) -->
+	
+	<!-- <insert id="addEmp" parameterType="com.tongji.bean.Employee"
+    databaseId="oracle">
+    keyproperty吧查出的主键值给javabean的哪个属性 
+         order="BEFORE"当前的sql在插入sql之前运行
+         resultType:查出的数据的返回值类型
+   
+        <selectKey keyProperty="id" order="AFTER" resultType="Integer">
+            编写查询主键序列的SQL语句
+            select test_seq.currval from dual
+        </selectKey>
+            插入时的主键从序列中拿到
+        insert into employees(employee_id,last_name,hire_date)
+        values(test_seq.nextval,#{lastName},#{hireDate})
+    </insert> -->
+	
+  
+   
     <!-- mysql是支持自增的主键的，自增主键的获取利用statement.getGenreatedKeys（）； 
     useGeneratedKeys="true";使用自增获取主键的策略
     keyProperty指定对应的主键属性，把值封装给javaBean的哪个属性。
@@ -38,12 +80,18 @@ public Employee getEmpById(Integer id);把这个接口的方法和这个id绑定
         insert into customer(name,birth)
         values(#{lastName},#{hireDate})
     </insert>
+ 
+ 
+
+    
     <!--  public void updateEmp(Employee employee); -->
     <update id="updateEmp">
         update employees 
             set employee_id=#{id},last_name=#{lastName}
             where employee_id = #{id}
     </update>
+    
+    
     <!-- public void deleteEmpById(Integer id); -->
     <delete id="deleteEmpById">
         delete from employees where employee_id = #{id} 

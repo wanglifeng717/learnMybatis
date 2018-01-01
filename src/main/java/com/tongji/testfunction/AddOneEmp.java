@@ -35,7 +35,8 @@ public class AddOneEmp {
 		return new SqlSessionFactoryBuilder().build(inputStream);
 	}
 	/**
-	 * 功能：我们提交现在提交是手动提交的。
+	 * 功能：测试向Oracle数据库中插入一条数据。
+	 * 我们提交现在提交是手动提交的。
 	 * 我们可以使用自动提交的方式。
 	 * SqlSessionFactory.openSession();手动提交
 	 * SqlSessionFactory.openSession(true);自动提交
@@ -60,7 +61,8 @@ public class AddOneEmp {
 		}
 	}
 	/**
-	 * 功能：测试获取mysql自增的主键的值得测试。
+	 * 功能：吧默认数据库切到mysql下
+	 * 测试获取mysql自增的主键的值得测试。
 	 * 
 	 * @throws IOException
 	 */
@@ -71,8 +73,32 @@ public class AddOneEmp {
 		SqlSession openSession = sessionFactory.openSession();
 		try {
 			EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
-			//这里ID的值我们Null 因为返回的值我们要赋进去。
+			//这里ID的值Null 因为返回的值我们已经通过序列赋值进去了，所以是没问题的。
 			Employee employee = new Employee(null, "wwwwwzzzz",new Date(new java.util.Date().getTime()));
+			mapper.addEmp(employee);
+			//可以打印出返回值。
+			System.out.println(employee.getId());
+			//2.手动提交
+			openSession.commit();
+		}finally {
+			openSession.close();
+		}
+	}
+	/**
+	 * 功能：默认数据库切换到oracle下
+	 * 测试向oracle数据库插入自增的主键
+	 * @throws IOException 
+	 *
+	 */
+	@Test
+	public void testAddOneEmpForOracle() throws IOException {
+		SqlSessionFactory sessionFactory=getSqlSessionFactory();
+		//1.获取到的sqlSession不会自动提交数据
+		SqlSession openSession = sessionFactory.openSession();
+		try {
+			EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+			//这里的ID虽然是。
+			Employee employee = new Employee(null, "wwwwwzzzzffff",new Date(new java.util.Date().getTime()));
 			mapper.addEmp(employee);
 			//可以打印出返回值。
 			System.out.println(employee.getId());

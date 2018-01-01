@@ -9,6 +9,8 @@
 */
 package com.tongji.dao;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.tongji.bean.Employee;
@@ -23,6 +25,8 @@ import com.tongji.bean.Employee;
 //	Integer，long,Boolean
 
 public interface EmployeeMapper {
+	
+	public Employee getEmpByMap(Map<String, Object> map);
 	
 	public Employee getEmpByIdAndLastName(@Param("id")Integer id,@Param("lastName")String lastName);
 	

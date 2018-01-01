@@ -119,4 +119,27 @@ public class GetDataById {
 			session.close();
 		}
 	}
+	/**
+	 * 功能：测试我们传两个参数的例子。
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void testGetDataByIdAndLastName() throws IOException {
+		// 1、获取sqlSessionFactory对象
+		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+		// 2、获取sqlSession对象
+		SqlSession openSession = sqlSessionFactory.openSession();
+		try {
+			// 3、获取接口的实现类对象
+			//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+			EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+			Employee employee = mapper.getEmpByIdAndLastName(178, "abc");
+			System.out.println(mapper.getClass());
+			System.out.println(employee);
+		} finally {
+			openSession.close();
+		}
+	}
+	
 }

@@ -23,8 +23,21 @@ public Employee getEmpById(Integer id);把这个接口的方法和这个id绑定
     </select>
 	
 
-	
-	   
+<!-- public Employee getEmpByIdAndLastName(Integer id,String lastName); -->
+
+<!-- 【命名参数】：
+    在接口类中，参数前面就明确定义。
+    public Employee getEmpByIdAndLastName(@Param("id")Integer id,@Param("lastName")String lastName);
+    明确指定封装参数时map的key；@Param("id")
+    多个参数会被封装成 一个map，
+        key：使用@Param注解指定的值
+        value：参数值
+ #{指定的key}取出对应的参数值 -->
+	<select id="getEmpByIdAndLastName" resultType="com.tongji.bean.Employee"
+    databaseId="oracle">
+        select * from employees where employee_id=#{id} and last_name=#{lastName}
+        
+	 </select>  
 	<!-- public void addEmp(Employee employee); -->
     <!-- SQL语句不能有分号 -->
     <!-- oracle默认的插入一条数据 -->

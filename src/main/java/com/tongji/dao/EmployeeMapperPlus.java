@@ -19,6 +19,7 @@ import com.tongji.bean.Employee;
 */
 public interface EmployeeMapperPlus {
 
+	public Employee getEmpByIdStep(Integer id);
 	//定义查询员工及其员工对应的部门的信息
 	public Employee getEmpAndDept(Integer id);
 	

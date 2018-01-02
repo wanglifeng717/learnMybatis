@@ -305,5 +305,28 @@ public class GetDataById {
 					openSession.close();
 				}	
 	}
+	/**
+	 * 功能：测试分布查询getEmpByIdStep
+	 * @throws IOException 
+	 * 
+	 *
+	 */
+	@Test
+	public void testgetEmpByIdStep() throws IOException {
+		// 1、获取sqlSessionFactory对象
+		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+		// 2、获取sqlSession对象
+		SqlSession openSession = sqlSessionFactory.openSession();
+		try {
+			// 3、获取接口的实现类对象
+			//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+			EmployeeMapperPlus mapper = openSession.getMapper(EmployeeMapperPlus.class);
+			Employee empById = mapper.getEmpByIdStep(177);
+			System.out.println(empById.getLastName());
+			//System.out.println(empById.getDept());
+		} finally {
+			openSession.close();
+		}	
+	}
 	
 }

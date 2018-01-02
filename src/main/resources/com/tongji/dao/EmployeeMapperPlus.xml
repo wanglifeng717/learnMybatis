@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- namespace跟接口绑定，就是接口的全类名 -->
+ <mapper namespace="com.tongji.dao.EmployeeMapperPlus">
+ 
+<!-- 自定义某个javaBean的封装规则，type:自定义规则的java类型 ;id：唯一的标识方便引用-->
+    <resultMap type="com.tongji.bean.Employee" id="MyEmp">
+         <!-- 指定主键列的封装规则 ,也可以在reslut中定义，但是单独定义有底层的优化规则-->
+         <!-- column:指定那一列; property:指定对应的javaBean属性 -->
+         <id column="employee_id" property="id"/>
+         
+         <!-- 定义普通列的封装规则 ,虽然可以自动封装，但是只要写就全部写上-->
+         <result column="last_name" property="lastName"/>
+         <result column="hire_date" property="hireDate"/>
+    </resultMap>
+ 
+ <!-- public Employee getEmpById(Integer id); -->
+ <!-- 这里的resultType可以在全局配置里面取别名为employee,在类上加注解@Alias("emp") 最后只用emp，不然必须写全类名-->
+ <!-- resultType和reslutMap只能二选一 -->
+    <select id="getEmpById"  resultMap="MyEmp">
+        select * from employees where employee_id=#{id}
+    </select>
+ 
+ </mapper>

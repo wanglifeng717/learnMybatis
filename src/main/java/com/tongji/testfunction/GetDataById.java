@@ -28,6 +28,7 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 import com.tongji.bean.Employee;
 import com.tongji.dao.EmployeeMapper;
 import com.tongji.dao.EmployeeMapperAnnotation;
+import com.tongji.dao.EmployeeMapperPlus;
 
 /**  
 * Title: MybatisTest 
@@ -249,4 +250,38 @@ public class GetDataById {
 					openSession.close();
 				}	
 	}
+	
+	
+	
+	
+//从此一下，我们开始测试我们的新的局部映射文件plus的操作，主要是数据库字段和类属性不一致情况下，我们如何自定义映射	
+//从此一下，我们开始测试我们的新的局部映射文件plus的操作，主要是数据库字段和类属性不一致情况下，我们如何自定义映射
+//从此一下，我们开始测试我们的新的局部映射文件plus的操作，主要是数据库字段和类属性不一致情况下，我们如何自定义映射
+//从此一下，我们开始测试我们的新的局部映射文件plus的操作，主要是数据库字段和类属性不一致情况下，我们如何自定义映射
+	
+	
+	
+	
+	/**
+	 * 功能：测试使用新的plus配置文件。测试输入id查询员工
+	 * @throws IOException 
+	 *
+	 */
+	@Test
+	public void testPlusGetEmpById() throws IOException {
+		// 1、获取sqlSessionFactory对象
+		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+		// 2、获取sqlSession对象
+		SqlSession openSession = sqlSessionFactory.openSession();
+		try {
+			// 3、获取接口的实现类对象
+			//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+			EmployeeMapperPlus mapper = openSession.getMapper(EmployeeMapperPlus.class);
+			Employee empById = mapper.getEmpById(178);
+			System.out.println(empById);
+		} finally {
+			openSession.close();
+		}	
+	}
+	
 }

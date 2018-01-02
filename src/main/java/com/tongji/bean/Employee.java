@@ -22,6 +22,13 @@ public class Employee {
 	Integer id;          //这个属性和数据库的字段如果不同，查询的时候必须用别名
 	String lastName;
 	Date hireDate;
+	Department  dept;
+	public Department getDept() {
+		return dept;
+	}
+	public void setDept(Department dept) {
+		this.dept = dept;
+	}
 	public Employee() {
 		super();
 		// TODO 自动生成的构造函数存根

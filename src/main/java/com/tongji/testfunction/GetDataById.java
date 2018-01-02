@@ -283,5 +283,27 @@ public class GetDataById {
 			openSession.close();
 		}	
 	}
+	/**
+	 * 功能：测试，我们多表连接，最后返回的值
+	 * @throws IOException 
+	 *
+	 */
+	@Test
+	public void testgetEmpAndDept() throws IOException {
+		// 1、获取sqlSessionFactory对象
+				SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+				// 2、获取sqlSession对象
+				SqlSession openSession = sqlSessionFactory.openSession();
+				try {
+					// 3、获取接口的实现类对象
+					//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+					EmployeeMapperPlus mapper = openSession.getMapper(EmployeeMapperPlus.class);
+					Employee empById = mapper.getEmpAndDept(177);
+					System.out.println(empById);
+					System.out.println(empById.getDept());
+				} finally {
+					openSession.close();
+				}	
+	}
 	
 }

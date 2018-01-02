@@ -98,7 +98,7 @@ public class AddOneEmp {
 		try {
 			EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
 			//这里的ID虽然是。
-			Employee employee = new Employee(null, "wwwwwzzzzffff",new Date(new java.util.Date().getTime()));
+			Employee employee = new Employee(null,"jerry",null);
 			mapper.addEmp(employee);
 			//可以打印出返回值。
 			System.out.println(employee.getId());

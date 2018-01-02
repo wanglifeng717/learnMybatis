@@ -19,9 +19,11 @@
               示例中：我们数据库取名一般带下划线last_name，但是我们java类中命名一般是lastName的驼峰方式。
                这里设置后我们就不用去取别名什么的了，直接就映射上了 last_name -> lastName
                注意：这里的映射只是去掉了下划线。比如last_name 和 LaStNaMe 这种也是能映射上去的。显然集体转化为了大写或者小写
+                由于全局配置中如果null会映射成other 我们这里强制使用null。不然oracle中是不识别的。
      -->
     <settings> 
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="jdbcTypeForNull" value="NULL"/>
     </settings>
 
     <!-- 3、typeAliases：别名处理器：可以为我们的java类型起别名 ，在类映射文件resultType中可以用别名

@@ -49,8 +49,16 @@ public Employee getEmpById(Integer id);把这个接口的方法和这个id绑定
     <select id="getEmpsByLastNameLike" resultType="com.tongji.bean.Employee">
         select * from employees where last_name like #{lastName}
     </select>
-
- 
+<!-- public Map<String, Object> getEmpByIdReturnMap(Integer id); -->
+<!-- resultType返回值可以直接写map,因为mybatis为我们经常用的类封装了别名。我们可以直接用 -->
+    <select id="getEmpByIdReturnMap" resultType="map">
+        select * from employees where employee_id=#{id}
+    </select>
+<!-- public Map<Integer, Employee> getEmpByLastNameLikeReturnMap(String lastName); -->
+<!-- resultType类型取决于我们想把返回的封装成什么类型。所以这里还是Employee -->
+    <select id="getEmpByLastNameLikeReturnMap" resultType="com.tongji.bean.Employee">
+        select employee_id id,last_name,hire_date from employees where last_name like #{lastName}
+    </select>
 <!-- public void addEmp(Employee employee); -->
     <!-- SQL语句不能有分号 -->
     <!-- oracle默认的插入一条数据 -->

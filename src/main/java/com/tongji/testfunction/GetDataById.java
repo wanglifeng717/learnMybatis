@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -197,5 +198,55 @@ public class GetDataById {
 				} finally {
 					openSession.close();
 				}
+	}
+	
+	/**
+	 * 功能：测试获取一条记录，我们封装成map的形式。
+	 * @throws IOException 
+	 *
+	 */
+	@Test
+	public void testgetEmpByIdReturnMap() throws IOException {
+		// 1、获取sqlSessionFactory对象
+		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+		// 2、获取sqlSession对象
+		SqlSession openSession = sqlSessionFactory.openSession();
+		try {
+			// 3、获取接口的实现类对象
+			//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+			EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+			Map<String, Object> empByIdReturnMap = mapper.getEmpByIdReturnMap(179);
+			for(Map.Entry<String, Object> entry:empByIdReturnMap.entrySet())
+			{
+				System.out.println(entry.getKey()+":"+entry.getValue());
+			}
+		} finally {
+			openSession.close();
+		}	
+	}
+	/**
+	 * 功能：测试getEmpByLastNameLikeReturnMap
+	 * 返回一个map。键是一条记录的主键，值是我们一条记录封装出来的对象
+	 * @throws IOException 
+	 *
+	 */
+	@Test
+	public void testgetEmpByLastNameLikeReturnMap() throws IOException {
+		// 1、获取sqlSessionFactory对象
+				SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+				// 2、获取sqlSession对象
+				SqlSession openSession = sqlSessionFactory.openSession();
+				try {
+					// 3、获取接口的实现类对象
+					//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+					EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+					Map<Integer, Employee> empByLastNameLikeReturnMap = mapper.getEmpByLastNameLikeReturnMap("%a%");
+					for (Map.Entry<Integer, Employee> entry:empByLastNameLikeReturnMap.entrySet())
+					{
+						System.out.println(entry);
+					}
+				} finally {
+					openSession.close();
+				}	
 	}
 }

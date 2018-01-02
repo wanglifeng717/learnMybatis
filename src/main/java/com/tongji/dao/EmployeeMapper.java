@@ -13,6 +13,7 @@ package com.tongji.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 
 import com.tongji.bean.Employee;
@@ -27,6 +28,13 @@ import com.tongji.bean.Employee;
 //	Integer，long,Boolean
 
 public interface EmployeeMapper {
+	
+	//多条记录封装一个map,Map<Integer,Employee>:键：是这条记录的主键，值是记录封装后的javaBean
+	@MapKey("id")//告诉mybatis返回的时候用哪个作为键
+	public Map<Integer, Employee> getEmpByLastNameLikeReturnMap(String lastName);
+	
+	//返回一条记录的map：key就是列名，值就是对应的值。
+	public Map<String, Object> getEmpByIdReturnMap(Integer id);
 	
 	public List<Employee> getEmpsByLastNameLike(String lastName);
 	

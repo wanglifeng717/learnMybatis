@@ -44,6 +44,11 @@ public Employee getEmpById(Integer id);把这个接口的方法和这个id绑定
         select * from employees where employee_id=#{id} and last_name=#{lastName}
     </select>
 
+<!-- 返回一个集合public List getEmpsByLastNameLike(String lastName); -->
+<!-- resultType 返回值的类型不是list而是写集合里面元素的类型 -->
+    <select id="getEmpsByLastNameLike" resultType="com.tongji.bean.Employee">
+        select * from employees where last_name like #{lastName}
+    </select>
 
  
 <!-- public void addEmp(Employee employee); -->

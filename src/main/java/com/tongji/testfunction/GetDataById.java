@@ -9,10 +9,12 @@
 */
 package com.tongji.testfunction;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.MalformedInputException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
@@ -20,6 +22,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import com.tongji.bean.Employee;
 import com.tongji.dao.EmployeeMapper;
@@ -169,5 +172,30 @@ public class GetDataById {
 		} finally {
 			openSession.close();
 		}
+	}
+	
+	/**
+	 * 功能：测试获取一个员工的集合
+	 * getEmpsByLastNameLike()
+	 * @throws IOException 
+	 */
+	@Test
+	public void testgetEmpsByLastNameLike() throws IOException {
+		// 1、获取sqlSessionFactory对象
+				SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+				// 2、获取sqlSession对象
+				SqlSession openSession = sqlSessionFactory.openSession();
+				try {
+					// 3、获取接口的实现类对象
+					//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+					EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+					List<Employee> empsByLastNameLike = mapper.getEmpsByLastNameLike("%a%");
+					for(Employee employee:empsByLastNameLike)
+					{
+						System.out.println(employee);
+					}
+				} finally {
+					openSession.close();
+				}
 	}
 }

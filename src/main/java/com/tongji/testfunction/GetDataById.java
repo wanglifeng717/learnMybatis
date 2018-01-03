@@ -25,7 +25,9 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 import org.omg.CORBA.PUBLIC_MEMBER;
 
+import com.tongji.bean.Department;
 import com.tongji.bean.Employee;
+import com.tongji.dao.DepartmentMapper;
 import com.tongji.dao.EmployeeMapper;
 import com.tongji.dao.EmployeeMapperAnnotation;
 import com.tongji.dao.EmployeeMapperPlus;
@@ -306,7 +308,7 @@ public class GetDataById {
 				}	
 	}
 	/**
-	 * 功能：测试分布查询getEmpByIdStep
+	 * 功能：测试分步查询getEmpByIdStep，一个员工有一个部门，我们查出员工及部门
 	 * @throws IOException 
 	 * 
 	 *
@@ -322,11 +324,34 @@ public class GetDataById {
 			//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
 			EmployeeMapperPlus mapper = openSession.getMapper(EmployeeMapperPlus.class);
 			Employee empById = mapper.getEmpByIdStep(177);
+			//分步查询的时候没有获取dept里面的内容，她就先不发SQL，延迟加载，需要的时候在发
 			System.out.println(empById.getLastName());
 			//System.out.println(empById.getDept());
 		} finally {
 			openSession.close();
 		}	
+	}
+	/**
+	 * 功能：一个部门里面有很多员工，我们查出部门及其员工
+	 * @throws IOException 
+	 *
+	 */
+	@Test
+	public void testgetDeptByIdPlus() throws IOException {
+		// 1、获取sqlSessionFactory对象
+				SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+				// 2、获取sqlSession对象
+				SqlSession openSession = sqlSessionFactory.openSession();
+				try {
+					// 3、获取接口的实现类对象
+					//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+					DepartmentMapper mapper = openSession.getMapper(DepartmentMapper.class);
+					Department department = mapper.getDeptByIdPlus(80);
+					System.out.println(department);
+					System.out.println(department.getEmployees());
+				} finally {
+					openSession.close();
+				}	
 	}
 	
 }

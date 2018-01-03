@@ -9,6 +9,8 @@
 */
 package com.tongji.bean;
 
+import java.util.List;
+
 /**  
 * Title: Department 
 * Description:  
@@ -19,7 +21,16 @@ public class Department {
 
 	private Integer id;
 	private String departmentName;
-	
+	//一个部门会有很多员工，我们会需要这样的查询
+	private List<Employee> employees;
+	public List<Employee> getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
+	}
+
 	public Department() {
 		super();
 		// TODO 自动生成的构造函数存根

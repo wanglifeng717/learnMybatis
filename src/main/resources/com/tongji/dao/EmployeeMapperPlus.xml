@@ -28,7 +28,7 @@
    Employee === Department
    
   -->
-		  <!-- 联合查询：级联属性封装结果集 -->
+ <!-- 联合查询：级联属性封装结果集 -->
 		  <!-- 自定义某个javaBean的封装规则，type:自定义规则的java类型 ;id：唯一的标识方便引用-->
 		    <resultMap type="com.tongji.bean.Employee" id="MyEmpJoin">
 		         <!-- 指定主键列的封装规则 ,也可以在reslut中定义，但是单独定义有底层的优化规则-->
@@ -43,7 +43,7 @@
 		    </resultMap>
 		    
 		    
-		<!-- 使用association指定联合的javaBean对象 -->
+<!-- 使用association指定联合的javaBean对象 -->
 		    <!-- 自定义某个javaBean的封装规则，type:自定义规则的java类型 ;id：唯一的标识方便引用-->
 		    <resultMap type="com.tongji.bean.Employee" id="MyEmpAsso">
 		         <!-- 指定主键列的封装规则 ,也可以在reslut中定义，但是单独定义有底层的优化规则-->
@@ -73,41 +73,48 @@
  
  
 <!-- 使用association进行分步查询 
-    1.按照员工Id查询员工信息
-    2.根据查询员工信息中的department_id值去部门表中查出部门信息
-    3.部门设置到员工中：    
-    
-        分步查询的好处可以使用延迟加载（懒加载）；(按需加载)
-        Employee==>Dept：
-            我们每次查询Employee对象的时候，都将一起查询出来。
-            部门信息在我们使用的时候再去查询；
-            分段查询的基础之上加上两个配置：
-            在全局配置文件中加入
-        <setting name="lazyLoadingEnabled" value="true"/>
-        <setting name="aggressiveLazyLoading" value="false"/>
-      
--->
-         <resultMap type="com.tongji.bean.Employee" id="MyEmpStep">
-                 <!-- 指定主键列的封装规则 ,也可以在reslut中定义，但是单独定义有底层的优化规则-->
-                 <!-- column:指定那一列; property:指定对应的javaBean属性 -->
-                 <id column="employee_id" property="id"/>
+		    1.按照员工Id查询员工信息
+		    2.根据查询员工信息中的department_id值去部门表中查出部门信息
+		    3.部门设置到员工中：    
+		    
+		        分步查询的好处可以使用延迟加载（懒加载）；(按需加载)
+		        Employee==>Dept：
+		            我们每次查询Employee对象的时候，都将一起查询出来。
+		            部门信息在我们使用的时候再去查询；
+		            分段查询的基础之上加上两个配置：
+		            在全局配置文件中加入
+		        <setting name="lazyLoadingEnabled" value="true"/>
+		        <setting name="aggressiveLazyLoading" value="false"/>
+		      
+		-->
+		         <resultMap type="com.tongji.bean.Employee" id="MyEmpStep">
+		                 <!-- 指定主键列的封装规则 ,也可以在reslut中定义，但是单独定义有底层的优化规则-->
+		                 <!-- column:指定那一列; property:指定对应的javaBean属性 -->
+		                 <id column="employee_id" property="id"/>
+		
+		                 <result column="last_name" property="lastName"/>
+		                 <result column="hire_date" property="hireDate"/>
+		                 <!-- association定义关联对象的封装规则
+		                select:表明当前属性是调用select指定的方法查出的结果,namespace+id
+		                column:指定将哪一列的值传给这个方法
+		            
+		                                                 流程：使用select指定的方法（传入column指定的这列参数的值）查出对象，并封装给property指定的属性
+		                -->
+		                 <association property="dept" 
+		                    select="com.tongji.dao.DepartmentMapper.getDeptById"
+		                    column="department_id">
+		     
+		                 </association>
+		            </resultMap>
+		        <select id="getEmpByIdStep" resultMap="MyEmpStep">
+		            select * from employees where employee_id=#{id}
+		        </select>
+		        
+		        
 
-                 <result column="last_name" property="lastName"/>
-                 <result column="hire_date" property="hireDate"/>
-                 <!-- association定义关联对象的封装规则
-                select:表明当前属性是调用select指定的方法查出的结果,namespace+id
-                column:指定将哪一列的值传给这个方法
-            
-                                                 流程：使用select指定的方法（传入column指定的这列参数的值）查出对象，并封装给property指定的属性
-                -->
-                 <association property="dept" 
-                    select="com.tongji.dao.DepartmentMapper.getDeptById"
-                    column="department_id">
-     
-                 </association>
-            </resultMap>
-        <select id="getEmpByIdStep" resultMap="MyEmpStep">
-            select * from employees where employee_id=#{id}
-        </select>
  
  </mapper>
+ 
+ 
+ 
+ 

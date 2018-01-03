@@ -9,4 +9,39 @@
     select department_id ,department_name from departments where department_id=#{id}
  </select>
  
+ <!-- 
+    场景二：
+        查询部门的时候将部门对应的所有员工信息也查询出来：注释在DepartmentMapper.xml中
+     -->                
+<!-- public Department getDeptByIdPlus(Integer id); -->     
+
+<!-- 嵌套结果集的方式，使用collection标签来关联集合类型的属性封装规则 -->
+		<resultMap type="com.tongji.bean.Department" id="MyDept">
+		                         <!-- 指定主键列的封装规则 ,也可以在reslut中定义，但是单独定义有底层的优化规则-->
+		                         <!-- column:指定那一列; property:指定对应的javaBean属性 -->
+		                         <id column="department_id" property="id"/>
+		        
+		                         <result column="department_name" property="departmentName"/>
+		                         
+		                        <!-- collection定义关联的集合类型的属性的封装规则
+		                        ofType指定集合里面元素的类型 -->
+		                        <collection property="employees" ofType="com.tongji.bean.Employee">
+		                             <id column="employee_id" property="id"/>
+		                 
+		                             <!-- 定义普通列的封装规则 ,虽然可以自动封装，但是只要写就全部写上-->
+		                             <result column="last_name" property="lastName"/>
+		                             <result column="hire_date" property="hireDate"/>
+		                        </collection>
+		                         
+		                    </resultMap>        
+		 <select id="getDeptByIdPlus" resultMap="MyDept">
+		        select d.department_id department_id ,d.department_name department_name,
+		        e.employee_id employee_id ,e.last_name last_name,e.hire_date hire_date
+		            from departments d
+		            left join employees e
+		            on d.department_id = e.department_id
+		            where d.department_id= 80
+		 </select>
+		 
+ 
  </mapper>

@@ -20,4 +20,7 @@ import com.tongji.bean.Department;
 public interface DepartmentMapper {
 
 	public Department getDeptById(Integer id);
+	
+	//查询当前部门，把当前部门里面的员工信息也全部查出来
+	public Department getDeptByIdPlus(Integer id);
 }

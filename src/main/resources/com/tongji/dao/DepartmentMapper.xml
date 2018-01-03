@@ -43,5 +43,19 @@
 		            where d.department_id= 80
 		 </select>
 		 
+		 
+<!-- 我们使用分步查询完成 一个部门有多个员工-->		  
+ <!-- //通过Id查询部门，分步走
+    public Department getDeptByIdStep(Integer id); -->
+	 <resultMap type="com.tongji.bean.Department" id="MyDeptStep">
+	       <id column="department_id" property="id"/>    
+           <result column="department_name" property="departmentName"/>
+           <collection property="employees"
+           select="com.tongji.dao.EmployeeMapperPlus.getEmpsByDeptId"
+           column="department_id"></collection>
+	 </resultMap>
+    <select id="getDeptByIdStep" resultMap="MyDeptStep">
+        select department_id ,department_name from departments where department_id=#{id}
+    </select>
  
  </mapper>

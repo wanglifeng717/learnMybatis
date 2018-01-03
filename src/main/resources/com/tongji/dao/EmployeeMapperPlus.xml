@@ -110,9 +110,15 @@
 		            select * from employees where employee_id=#{id}
 		        </select>
 		        
-		        
+<!-- 场景二：每个部门有很多员工，这个根据部门编号查询其员工 -->		        
+<!-- //按照部门编号，查出该部门的所有员工
+public List<Employee> getEmpsByDeptId(Integer deptId);	 -->        
+
 
  
+    <select id="getEmpsByDeptId"  resultType="com.tongji.bean.Employee">
+       select employee_id,last_name,hire_date from employees where department_id=#{deptId}
+    </select>
  </mapper>
  
  

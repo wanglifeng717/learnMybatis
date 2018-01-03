@@ -32,6 +32,8 @@ import com.tongji.dao.EmployeeMapper;
 import com.tongji.dao.EmployeeMapperAnnotation;
 import com.tongji.dao.EmployeeMapperPlus;
 
+import oracle.net.aso.d;
+
 /**  
 * Title: MybatisTest 
 * Description:  根据文档测试使用mybatis，传入一个条SQL语句，得到一个javaBean对象
@@ -352,6 +354,29 @@ public class GetDataById {
 				} finally {
 					openSession.close();
 				}	
+				
+	}
+	/**
+	 * 功能：查询一个部门所有员工的信息，使用分段查询
+	 * @throws IOException 
+	 *
+	 */
+	@Test
+	public void testgetDeptByIdStep() throws IOException {
+		// 1、获取sqlSessionFactory对象
+		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+		// 2、获取sqlSession对象
+		SqlSession openSession = sqlSessionFactory.openSession();
+		try {
+			// 3、获取接口的实现类对象
+			//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+			DepartmentMapper mapper = openSession.getMapper(DepartmentMapper.class);
+			Department department = mapper.getDeptByIdStep(80);
+			System.out.println(department.getDepartmentName());
+			//System.out.println(department.getEmployees());
+		} finally {
+			openSession.close();
+		}	
 	}
 	
 }

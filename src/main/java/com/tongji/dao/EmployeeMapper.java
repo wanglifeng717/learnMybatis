@@ -29,6 +29,7 @@ import com.tongji.bean.Employee;
 
 public interface EmployeeMapper {
 	
+		
 	//多条记录封装一个map,Map<Integer,Employee>:键：是这条记录的主键，值是记录封装后的javaBean
 	@MapKey("id")//告诉mybatis返回的时候用哪个作为键
 	public Map<Integer, Employee> getEmpByLastNameLikeReturnMap(String lastName);

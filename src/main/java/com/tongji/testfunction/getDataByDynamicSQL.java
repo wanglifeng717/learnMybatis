@@ -11,6 +11,8 @@ package com.tongji.testfunction;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.ibatis.io.Resources;
@@ -149,5 +151,35 @@ public class getDataByDynamicSQL {
 		} finally {
 			openSession.close();
 		}	
+	}
+	
+	/**
+	 * 功能：
+	 * //根据传入的集合，把集合里面的员工全部查出来
+    	类似以：select * from employees where id in(?,?,?,?)
+    	public  List<Employee> getEmpsByConditionForeach(List<Integer> ids);
+	 * @throws IOException 
+	 */
+	@Test
+	public void testgetEmpsByConditionForeach() throws IOException {
+		        // 1、获取sqlSessionFactory对象
+				SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+				// 2、获取sqlSession对象
+				SqlSession openSession = sqlSessionFactory.openSession();
+				try {
+					// 3、获取接口的实现类对象
+					//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+					EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+					List<Employee> emps = mapper.getEmpsByConditionForeach(Arrays.asList(100,200,300,400));
+					for(Employee emp:emps)
+					{
+						System.out.println(emp);
+					}
+					
+					openSession.commit();
+				
+				} finally {
+					openSession.close();
+				}	
 	}
 }

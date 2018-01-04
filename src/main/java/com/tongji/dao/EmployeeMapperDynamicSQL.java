@@ -11,6 +11,8 @@ package com.tongji.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.tongji.bean.Employee;
 
 /**  
@@ -29,4 +31,6 @@ public interface EmployeeMapperDynamicSQL {
 	public List<Employee> getEmpsByConditionChoose(Employee employee);
 	//传入一个员工，更新这个数据记录，以前是传指定几个更新指定几个，和以前不同，我们现在是你自带哪些值，我就更新哪些值
 	public void updateEmp(Employee employee);
+	//根据传入的集合，把集合里面的员工全部查出来
+	public List<Employee> getEmpsByConditionForeach(@Param ("ids")List<Integer> ids);
 }

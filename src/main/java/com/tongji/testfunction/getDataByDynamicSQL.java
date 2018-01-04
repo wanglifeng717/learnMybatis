@@ -67,7 +67,34 @@ public class getDataByDynamicSQL {
 				
 				} finally {
 					openSession.close();
-				}
+				}				
 	}
 	
+	/**
+	 * //参询员工，传进来的员工携带哪几个字段就用携带上哪几个字段,只不过我们拿trim标签来模拟
+		public List<Employee> getEmpsByConditionTrim(Employee employee);
+	 * @throws IOException 
+	 */
+	@Test
+	public void testgetEmpsByConditionTrim() throws IOException {
+		// 1、获取sqlSessionFactory对象
+		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+		// 2、获取sqlSession对象
+		SqlSession openSession = sqlSessionFactory.openSession();
+		try {
+			// 3、获取接口的实现类对象
+			//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+			EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+			
+			Employee employee=new Employee(null, "%a%", null, null, 1, null);
+			List<Employee> emps = mapper.getEmpsByConditionTrim(employee);
+			for(Employee emp:emps)
+			{
+				System.out.println(emp);
+			}
+		
+		} finally {
+			openSession.close();
+		}		
+	}
 }

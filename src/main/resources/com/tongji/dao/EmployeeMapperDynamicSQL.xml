@@ -18,7 +18,7 @@ public List<Employee> getEmpsByConditionIf(Employee employee);
 	            
 	                                      遇见特殊符号应该去写转义字符：w3c html上面查询出来lastName!="" 
 	            &&：&amp;&amp;-->
-            <if test="lastName!=null &amp;&amp; lastName!=&quot;&quot;"> 
+             <if test="lastName!=null &amp;&amp; lastName!=&quot;&quot;"> 
                 and last_name like #{lastName}
             </if>
             <if test="email!=null and email.trim()!=&quot;&quot;">
@@ -27,6 +27,36 @@ public List<Employee> getEmpsByConditionIf(Employee employee);
             <!-- ognl会进行字符串与数字的转换判断  "0"==0 -->
             <if test="gender==0 or gender==1">and gender=#{gender}</if>
         </where>      
+    </select>
+  
+<!-- //参询员工，传进来的员工携带哪几个字段就用携带上哪几个字段,只不过我们拿trim标签来模拟
+public List<Employee> getEmpsByConditionTrim(Employee employee); -->  
+    
+    <select id="getEmpsByConditionTrim" resultType="com.tongji.bean.Employee">
+         select * from employees 
+         <!-- 后面多出的and或者or where标签不能解决 
+		        prefix="":前缀：trim标签体中是整个字符串拼串 后的结果。
+		                prefix给拼串后的整个字符串加一个前缀 
+		        prefixOverrides="":
+		                前缀覆盖： 去掉整个字符串前面多余的字符
+		        suffix="":后缀
+		                suffix给拼串后的整个字符串加一个后缀 
+		        suffixOverrides=""
+		                后缀覆盖：去掉整个字符串后面多余的字符
+		                
+		        -->
+        <!-- 自定义字符串的截取规则 -->
+        <trim prefix="where" suffixOverrides="and">
+            <if test="id!=null"> id=#{id} and</if>
+             <if test="lastName!=null &amp;&amp; lastName!=&quot;&quot;"> 
+                 last_name like #{lastName} and
+            </if>
+            <if test="email!=null and email.trim()!=&quot;&quot;">
+                 email=#{email} and
+            </if>
+            <if test="gender==0 or gender==1"> gender=#{gender}</if>
+        </trim>      
+    
     </select>
   
   

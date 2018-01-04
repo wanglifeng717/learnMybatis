@@ -23,4 +23,7 @@ public interface EmployeeMapperDynamicSQL {
 
 	//参询员工，传进来的员工携带哪几个字段就用携带上哪几个字段。
 	public List<Employee> getEmpsByConditionIf(Employee employee);
+	//参询员工，传进来的员工携带哪几个字段就用携带上哪几个字段,只不过我们拿trim标签来模拟
+	public List<Employee> getEmpsByConditionTrim(Employee employee);
+	
 }

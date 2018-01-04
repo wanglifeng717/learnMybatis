@@ -33,4 +33,7 @@ public interface EmployeeMapperDynamicSQL {
 	public void updateEmp(Employee employee);
 	//根据传入的集合，把集合里面的员工全部查出来
 	public List<Employee> getEmpsByConditionForeach(@Param ("ids")List<Integer> ids);
+	
+	//批量插入很多条员工数据
+	public void addEmps(@Param("emps") List<Employee> emps);
 }

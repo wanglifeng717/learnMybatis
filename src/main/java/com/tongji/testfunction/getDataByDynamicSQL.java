@@ -9,6 +9,8 @@
 */
 package com.tongji.testfunction;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -181,5 +183,32 @@ public class getDataByDynamicSQL {
 				} finally {
 					openSession.close();
 				}	
+	}
+	/**
+	 * <!-- //批量插入很多条员工数据
+    public void addEmps(@Param("emps") List<Employee> emps); 
+    对于mysql
+	 * @throws IOException 
+	 */
+	@Test
+	public void testaddEmps() throws IOException {
+		// 1、获取sqlSessionFactory对象
+		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+		// 2、获取sqlSession对象
+		SqlSession openSession = sqlSessionFactory.openSession();
+		try {
+			// 3、获取接口的实现类对象
+			//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+			EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+			List<Employee> list =new ArrayList<>();
+			list.add(new Employee(401, "400", "400@qq.com", null, null, null));
+			list.add(new Employee(501, "500", "500@qq.com", null, null, null));
+			list.add(new Employee(601, "600", "600@qq.com", null, null, null));
+			mapper.addEmps(list);
+			openSession.commit();
+		
+		} finally {
+			openSession.close();
+		}	
 	}
 }

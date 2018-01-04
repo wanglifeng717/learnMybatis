@@ -140,8 +140,28 @@ public List<Employee> getEmpsByConditionTrim(Employee employee); -->
 </select>
  
  
+ <!-- //批量插入很多条员工数据
+    public void addEmps(@Param("emps") List<Employee> emps); 
+    对于mysql
+ MySQL下批量保存：可以foreach遍历   mysql支持values(),(),()语法
+ -->
+		 <insert id="addEmps" databaseId="mysql">
+		    insert into customer (id,name,email)
+		    values
+		    <foreach collection="emps" item="emp" separator=",">
+		       (#{emp.id},#{emp.lastName},#{emp.email})
+		    </foreach>
+		 </insert> 
  
- 
- 
+  <!-- 这种方式需要数据库连接属性dbconf中dbconf文件中mysql配置中,不能有空格
+    意思就是可以发多条SQL语句，中间用分号隔开 ：  sql1;sql2；sql3;
+    mysql.url=jdbc:mysql://127.0.0.1:3306/mydata?allowMultiQueries=true
+        这种分号分隔多个sql可以用于其他的批量操作（删除，修改） -->
+	     <!--  <insert id="addEmps" databaseId="mysql">
+	        <foreach collection="emps" item="emp" separator=";">
+	            insert into customer (id,name,email)
+	            values(#{emp.id},#{emp.lastName},#{emp.email})
+	        </foreach>
+	     </insert>  -->
   
  </mapper>

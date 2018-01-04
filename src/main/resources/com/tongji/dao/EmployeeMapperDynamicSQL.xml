@@ -10,7 +10,7 @@ public List<Employee> getEmpsByConditionIf(Employee employee);
     <select id="getEmpsByConditionIf" resultType="com.tongji.bean.Employee">
         select * from employees 
         <where>
-            <if test="id!=null"> id=#{id}</if>
+            <if test="id!=null"> employee_id=#{id}</if>
             <!-- test：判断表达式（OGNL）
 	            OGNL参照PPT或者官方文档。
 	                 c:if  test
@@ -42,12 +42,11 @@ public List<Employee> getEmpsByConditionTrim(Employee employee); -->
 		        suffix="":后缀
 		                suffix给拼串后的整个字符串加一个后缀 
 		        suffixOverrides=""
-		                后缀覆盖：去掉整个字符串后面多余的字符
-		                
+		                后缀覆盖：去掉整个字符串后面多余的字符		                
 		        -->
         <!-- 自定义字符串的截取规则 -->
         <trim prefix="where" suffixOverrides="and">
-            <if test="id!=null"> id=#{id} and</if>
+            <if test="id!=null"> employee_id=#{id} and</if>
              <if test="lastName!=null &amp;&amp; lastName!=&quot;&quot;"> 
                  last_name like #{lastName} and
             </if>
@@ -56,8 +55,37 @@ public List<Employee> getEmpsByConditionTrim(Employee employee); -->
             </if>
             <if test="gender==0 or gender==1"> gender=#{gender}</if>
         </trim>      
-    
     </select>
-  
+
+
+<!-- //查询员工，是按照选择某个条件，而不是向上面一样，所有条件去全部封装起来。
+    public List<Employee> getEmpsByConditionChoose(Employee employee);   -->
+<select id="getEmpsByConditionChoose" resultType="com.tongji.bean.Employee">
+    select * from employees 
+    <where>
+        <choose>
+            <when test="id!=null">employee_id=#{id}</when>
+            <when test="lastName!=null">last_name like #{lastName}</when>
+            <when test="email!=null">email=#{email}</when>
+            <otherwise> gender=0</otherwise>
+            <!-- 否则就是把所有女生都查出来 -->
+        </choose>
+    </where>
+
+
+</select> 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
   
  </mapper>

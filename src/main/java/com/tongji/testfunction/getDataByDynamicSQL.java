@@ -97,4 +97,32 @@ public class getDataByDynamicSQL {
 			openSession.close();
 		}		
 	}
+	
+	/**
+	 *  //查询员工，是按照选择某个条件，而不是向上面一样，所有条件去全部封装起来。
+    	public List<Employee> getEmpsByConditionChoose(Employee employee);
+	 * @throws IOException 
+	 */
+	@Test
+	public void testgetEmpsByConditionChoose() throws IOException {
+		// 1、获取sqlSessionFactory对象
+				SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+				// 2、获取sqlSession对象
+				SqlSession openSession = sqlSessionFactory.openSession();
+				try {
+					// 3、获取接口的实现类对象
+					//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+					EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+					
+					Employee employee=new Employee(200, "%a%", null, null, 1, null);
+					List<Employee> emps = mapper.getEmpsByConditionChoose(employee);
+					for(Employee emp:emps)
+					{
+						System.out.println(emp);
+					}
+				
+				} finally {
+					openSession.close();
+				}	
+	}
 }

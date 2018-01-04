@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- namespace是与对应的接口的全类名 -->
+ <mapper namespace="com.tongji.dao.EmployeeMapperDynamicSQL"> 
+<!--  //参询员工，传进来的员工携带哪个字段就用携带上那个字段。
+public List<Employee> getEmpsByConditionIf(Employee employee);
+-->
+    <select id="getEmpsByConditionIf" resultType="com.tongji.bean.Employee">
+        select * from employees 
+        <where>
+            <if test="id!=null"> id=#{id}</if>
+            <!-- test：判断表达式（OGNL）
+	            OGNL参照PPT或者官方文档。
+	                 c:if  test
+	                                     从参数中取值进行判断
+	            
+	                                      遇见特殊符号应该去写转义字符：w3c html上面查询出来lastName!="" 
+	            &&：&amp;&amp;-->
+            <if test="lastName!=null &amp;&amp; lastName!=&quot;&quot;"> 
+                and last_name like #{lastName}
+            </if>
+            <if test="email!=null and email.trim()!=&quot;&quot;">
+                and email=#{email}
+            </if>
+            <!-- ognl会进行字符串与数字的转换判断  "0"==0 -->
+            <if test="gender==0 or gender==1">and gender=#{gender}</if>
+        </where>      
+    </select>
+  
+  
+ </mapper>

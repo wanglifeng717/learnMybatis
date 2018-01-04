@@ -27,4 +27,6 @@ public interface EmployeeMapperDynamicSQL {
 	public List<Employee> getEmpsByConditionTrim(Employee employee);
 	//查询员工，是按照选择某个条件，而不是向上面一样，所有条件去全部封装起来。
 	public List<Employee> getEmpsByConditionChoose(Employee employee);
+	//传入一个员工，更新这个数据记录，以前是传指定几个更新指定几个，和以前不同，我们现在是你自带哪些值，我就更新哪些值
+	public void updateEmp(Employee employee);
 }

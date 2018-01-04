@@ -71,12 +71,48 @@ public List<Employee> getEmpsByConditionTrim(Employee employee); -->
             <!-- 否则就是把所有女生都查出来 -->
         </choose>
     </where>
-
-
 </select> 
  
  
- 
+<!-- //传入一个员工，更新这个数据记录，以前是传指定几个更新指定几个，和以前不同，我们现在是对象你自带哪些值，我就更新哪些值
+    <update id="updateEmp">
+        update employees 
+            set employee_id=#{id},last_name=#{lastName}
+            where employee_id = #{id}
+    </update>
+    public void updateEmp(Employee employee); -->
+<update id="updateEmp" >
+    <!-- Set标签的使用，这样可以给我们自动去掉末尾的逗号 -->
+        update employees 
+        <set>
+            <if test="lastName!=null">
+                last_name=#{lastName},
+            </if>
+            <if test="email!=null">
+                email=#{email},
+            </if>
+            <if test="gender!=null">
+                gender=#{gender}
+            </if>
+        </set>
+        where employee_id=#{id} 
+        <!-- 多重条件推荐写在where标签里面 ，简便的这样也是可以的。-->
+<!--        
+        Trim：更新拼串
+        update employees
+        <trim prefix="set" suffixOverrides=",">
+            <if test="lastName!=null">
+                last_name=#{lastName},
+            </if>
+            <if test="email!=null">
+                email=#{email},
+            </if>
+            <if test="gender!=null">
+                gender=#{gender}
+            </if>
+        </trim>
+        where id=#{id}  -->
+</update> 
  
  
  

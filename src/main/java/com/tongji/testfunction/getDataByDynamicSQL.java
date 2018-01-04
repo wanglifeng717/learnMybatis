@@ -125,4 +125,29 @@ public class getDataByDynamicSQL {
 					openSession.close();
 				}	
 	}
+	/**
+	 * 根据你这个传进来的类有什么字段，然后更新这些字段
+	 * public void updateEmp(Employee employee);
+	 * @throws IOException 
+	 */
+	@Test
+	public void testupdateEmp() throws IOException {
+		// 1、获取sqlSessionFactory对象
+		SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+		// 2、获取sqlSession对象
+		SqlSession openSession = sqlSessionFactory.openSession();
+		try {
+			// 3、获取接口的实现类对象
+			//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+			EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+			
+			Employee employee=new Employee(200, "wanglifeng33", null, null, 1, null);
+			mapper.updateEmp(employee);
+			
+			openSession.commit();
+		
+		} finally {
+			openSession.close();
+		}	
+	}
 }

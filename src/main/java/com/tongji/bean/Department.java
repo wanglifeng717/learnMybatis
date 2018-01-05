@@ -9,6 +9,7 @@
 */
 package com.tongji.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**  
@@ -17,7 +18,7 @@ import java.util.List;
 * @author mdm(computer in lab)  
 * @date 2018年1月4日  
 */
-public class Department {
+public class Department implements Serializable {
 
 	private Integer id;
 	private String departmentName;

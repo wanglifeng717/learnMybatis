@@ -50,6 +50,24 @@ public class testCache {
 	 * 		2、sqlSession相同，查询条件不同.(当前一级缓存中还没有这个数据)
 	 * 		3、sqlSession相同，两次查询之间执行了增删改操作(这次增删改可能对当前数据有影响)
 	 * 		4、sqlSession相同，手动清除了一级缓存（缓存清空）
+	 * 
+	 * 二级缓存：（全局缓存）：基于namespace级别的缓存：一个namespace对应一个二级缓存：
+	 * 		工作机制：
+	 * 		1、一个会话，查询一条数据，这个数据就会被放在当前会话的一级缓存中；
+	 * 		2、如果会话关闭；一级缓存中的数据会被保存到二级缓存中；新的会话查询信息，就可以参照二级缓存中的内容；
+	 * 		3、sqlSession===EmployeeMapper==>Employee
+	 * 						DepartmentMapper===>Department
+	 * 			不同namespace查出的数据会放在自己对应的缓存中（map）
+	 * 			效果：数据会从二级缓存中获取
+	 * 				查出的数据都会被默认先放在一级缓存中。
+	 * 				只有会话提交或者关闭以后，一级缓存中的数据才会转移到二级缓存中
+	 * 		使用：
+	 * 			1）、开启全局二级缓存配置：<setting name="cacheEnabled" value="true"/>
+	 * 			2）、去mapper.xml中配置使用二级缓存只要文件中有这一行即可：
+	 * 				<cache></cache>  啥都不写就是默认配置
+	 * 			3）、我们的POJO需要实现序列化接口
+					public class Employee implements Serializable {}
+					
 	 */
 	/**
 	 * 功能：
@@ -74,7 +92,7 @@ public class testCache {
 				System.out.println(emp);
 			}
 			
-			//第二次查询是从二级缓存中拿到的数据，并没有发送新的sql
+			//第二次查询是从一级缓存中拿到的数据，并没有发送新的sql
 			List<Employee> emps2=mapper.getEmpsByConditionChoose(employee);			
 			for(Employee emp:emps2)
 			{
@@ -125,6 +143,44 @@ public class testCache {
 		}finally{
 			openSession.close();
 		}
+	}
+	/**
+	 * 功能：
+	 * 测试二级缓存。
+	 * @throws IOException 
+	 */
+	@Test
+	public void testSecondCache() throws IOException {
+		// 1、获取sqlSessionFactory对象
+				SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+				// 2、获取sqlSession对象
+				SqlSession openSession = sqlSessionFactory.openSession();
+				SqlSession openSession2 = sqlSessionFactory.openSession();
+				try {
+					// 3、获取接口的实现类对象
+					//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+					EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+					EmployeeMapperDynamicSQL mapper2 = openSession2.getMapper(EmployeeMapperDynamicSQL.class);
+					
+					Employee employee=new Employee(200, "%a%", null, null, 1, null);
+					List<Employee> emps = mapper.getEmpsByConditionChoose(employee);
+					for(Employee emp:emps)
+					{
+						System.out.println(emp);
+					}
+					openSession.close();
+					
+					//第二次查询是从二级缓存中拿到的数据，并没有发送新的sql
+					List<Employee> emps2=mapper2.getEmpsByConditionChoose(employee);			
+					for(Employee emp:emps2)
+					{
+						System.out.println("emps2"+emp);
+					}
+					openSession2.close();
+				
+				} finally {
+					
+				}	
 	}
 	
 }

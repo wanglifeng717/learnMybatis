@@ -9,6 +9,7 @@
 */
 package com.tongji.bean;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**  
@@ -17,7 +18,7 @@ import java.sql.Date;
 * @author mdm(computer in lab)  
 * @date 2018年1月4日  
 */
-public class Employee {
+public class Employee implements Serializable{
 
 	private Integer  id;
 	private String  lastName;

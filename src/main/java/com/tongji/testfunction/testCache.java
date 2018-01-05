@@ -81,7 +81,31 @@ public class testCache {
 	 * 			5）、localCacheScope：本地缓存作用域：（一级缓存SESSION）；当前会话的所有数据保存在会话缓存中；
 	 * 								STATEMENT：可以禁用一级缓存；		
 	 * 				在全局配置中<setting name="localCacheScope" value="STATEMENT" > 全局禁用一级缓存
+				
 					
+	第三方缓存整合：
+	 *		1）、导入第三方缓存包即可；
+	 *				<dependency>
+					    <groupId>org.ehcache</groupId>
+					    <artifactId>ehcache</artifactId>
+					    <version>3.4.0</version>
+					</dependency>
+					
+					<dependency>
+					    <groupId>org.slf4j</groupId>
+					    <artifactId>slf4j-log4j12</artifactId>
+					    <version>1.7.7</version>
+					    <scope>test</scope>
+					</dependency>
+	 *		2）、导入与第三方缓存整合的适配包；官方有；
+	 *				<dependency>
+					    <groupId>org.mybatis.caches</groupId>
+					    <artifactId>mybatis-ehcache</artifactId>
+					    <version>1.1.0</version>
+					</dependency>
+	 *		3）、添加ehcache.xml配置文件
+	 *			在mapper.xml中使用自定义缓存
+	 *		<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
 	 */
 	/**
 	 * 功能：

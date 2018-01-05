@@ -201,9 +201,9 @@ public class getDataByDynamicSQL {
 			//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
 			EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
 			List<Employee> list =new ArrayList<>();
-			list.add(new Employee(401, "400", "400@qq.com", null, null, null));
-			list.add(new Employee(501, "500", "500@qq.com", null, null, null));
-			list.add(new Employee(601, "600", "600@qq.com", null, null, null));
+			list.add(new Employee(402, "400", "400@qq.com", null, null, null));
+			list.add(new Employee(502, "500", "500@qq.com", null, null, null));
+			list.add(new Employee(602, "600", "600@qq.com", null, null, null));
 			mapper.addEmps(list);
 			openSession.commit();
 		
@@ -211,4 +211,33 @@ public class getDataByDynamicSQL {
 			openSession.close();
 		}	
 	}
+	
+	/**
+	 * 功能：
+	 *<!-- 使用内置参数进行查询，不用区分不同的数据库了
+    	public List<Employee> getEmpsByInnerParamter(Employee employee);  -->
+	 * @throws IOException 
+	 */
+	@Test
+	public void testgetEmpsByInnerParamter() throws IOException {
+		// 1、获取sqlSessionFactory对象
+				SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+				// 2、获取sqlSession对象
+				SqlSession openSession = sqlSessionFactory.openSession();
+				try {
+					// 3、获取接口的实现类对象
+					//会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+					EmployeeMapperDynamicSQL mapper = openSession.getMapper(EmployeeMapperDynamicSQL.class);
+					List<Employee> emps = mapper.getEmpsByInnerParamter(new Employee(null, "%a%", null, null, null, null));
+					for(Employee emp:emps)
+					{
+						System.out.println(emp);
+					}
+					openSession.commit();
+				
+				} finally {
+					openSession.close();
+				}
+	}
+
 }

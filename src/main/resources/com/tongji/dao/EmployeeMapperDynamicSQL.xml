@@ -139,6 +139,7 @@ public List<Employee> getEmpsByConditionTrim(Employee employee); -->
         </foreach>
 </select>
  
+ <!-- 批量保存 -->
  
  <!-- //批量插入很多条员工数据
     public void addEmps(@Param("emps") List<Employee> emps); 
@@ -146,7 +147,9 @@ public List<Employee> getEmpsByConditionTrim(Employee employee); -->
  MySQL下批量保存：可以foreach遍历   mysql支持values(),(),()语法
  -->
 		 <insert id="addEmps" databaseId="mysql">
-		    insert into customer (id,name,email)
+		    insert into customer (
+		    <include refid="insertColumn"></include>
+		    )
 		    values
 		    <foreach collection="emps" item="emp" separator=",">
 		       (#{emp.id},#{emp.lastName},#{emp.email})
@@ -187,7 +190,7 @@ public List<Employee> getEmpsByConditionTrim(Employee employee); -->
                       select 'test_a_03' lastName,'test_a_e03' email from dual
                )    
      -->
-     <insert id="addEmps" databaseId="oracle">
+     <insert id="addEmps" databaseId="oracle" >
         <!-- oracle第一种批量方式 -->
         <!-- <foreach collection="emps" item="emp" open="begin" close="end;">
             insert into employees(employee_id,last_name,email) 
@@ -195,7 +198,9 @@ public List<Employee> getEmpsByConditionTrim(Employee employee); -->
         </foreach> -->
         
         <!-- oracle第二种批量方式  -->
-        insert into employees(employee_id,last_name,email)
+        insert into employees(
+            <include refid="insertColumn"></include>
+        )
        
                 <foreach collection="emps" item="emp" separator="union"
                     open="select employees_seq.nextval,lastName,email from("
@@ -203,6 +208,59 @@ public List<Employee> getEmpsByConditionTrim(Employee employee); -->
                     select #{emp.lastName} lastName,#{emp.email} email from dual
                 </foreach>
      </insert>
+ 
+ <!-- 两个内置参数：
+        不只是方法传递过来的参数可以被用来判断，取值。。。
+        mybatis默认还有两个内置参数：
+        _parameter:代表整个参数
+            单个参数：_parameter就是这个参数
+            多个参数：参数会被封装为一个map；_parameter就是代表这个map
+        
+        _databaseId:如果全局配置了databaseIdProvider标签。
+            _databaseId就是代表当前数据库的别名oracle
+      -->
+<!-- 使用内置参数进行查询，不用区分不同的数据库了
+    public List<Employee> getEmpsByInnerParamter(Employee employee);  -->
+     <select id="getEmpsByInnerParamter" resultType="com.tongji.bean.Employee">
+            <!-- bind：可以将OGNL表达式的值绑定到一个变量中，方便后来引用这个变量的值 
+                                     这里主要是模糊查询的用户，前端直接输入a后面自动拼成%a% ，虽然是可以的但是不建议用，不灵活-->
+            <bind name="_lastName" value="'%'+lastName+'%'"/>
+            <if test="_databaseId=='mysql'">
+                select 
+                <include refid="insertColumn"></include>
+                from customer
+                <if test="_parameter!=null">
+                    where name like #{lastName}
+                </if>
+            </if>
+            <if test="_databaseId=='oracle'">
+                select 
+                <include refid="insertColumn"></include>
+                from employees
+                <if test="_parameter!=null">
+                    where last_name like #{_parameter.lastName}
+                    <!-- _parameter是可写可不写的 -->
+                </if>
+            </if>
+     </select>
   
+<!-- 
+        抽取可重用的sql片段。方便后面引用 
+        1、sql抽取：经常将要查询的列名，或者插入用的列名抽取出来方便引用
+        2、include来引用已经抽取的sql：
+        3、include还可以自定义一些property，sql标签内部就能使用自定义的属性
+                <inclued refid="insertColumn">
+                    <property name="testColomn" value="abc">
+                include-property：取值的正确方式${prop},
+                #{不能使用这种方式}
+      -->
+	  <sql id="insertColumn">
+	    <if test="_databaseId=='oracle'">
+	        employee_id,last_name,email
+	    </if>
+	    <if test="_databaseId=='mysql'">
+	        id,name,email
+	    </if>
+	  </sql>
   
  </mapper>

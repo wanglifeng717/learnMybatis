@@ -36,4 +36,6 @@ public interface EmployeeMapperDynamicSQL {
 	
 	//批量插入很多条员工数据
 	public void addEmps(@Param("emps") List<Employee> emps);
+	//使用内置参数进行查询，不用区分不同的数据库了
+	public List<Employee> getEmpsByInnerParamter(Employee employee);
 }
